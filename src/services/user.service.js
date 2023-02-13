@@ -1,20 +1,5 @@
 const { User } = require('../models');
-// const userSchema = require('../schemas/User');
 const auth = require('../utils/auth');
-
-// const loginUser = async (email, password) => {
-//   const { type, message } = userSchema.validateLogin(email, password);
-//   if (type) return { type, message };
-
-//   const loggedIn = await User.findOne({ where: { email, password } });
-//   if (!loggedIn || password !== loggedIn.password) {
-//     return { type: 400, message: 'Invalid fields' };
-//   }
-
-//   const token = jwt.createToken(email);
-
-//   return { type: null, message: token };
-// };
 
 const loginUser = async (email, password) => {
   if (!email || !password) {
@@ -30,6 +15,18 @@ const loginUser = async (email, password) => {
   return { type: null, message: token };
 };
 
+const userCreate = async (displayName, email, password, image) => {
+  const sameEmail = await User.findOne({ where: { email } });
+  if (sameEmail) { 
+    return { type: 409, message: 'User already registered' };
+   }
+ await User.create({ displayName, email, password, image });
+  const token = auth.createToken(email); // check
+
+  return { type: null, message: token };
+};
+
 module.exports = {
   loginUser,
+  userCreate,
 };

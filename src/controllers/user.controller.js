@@ -1,9 +1,15 @@
 const userService = require('../services/user.service');
 
-// const userCreate = async (req, res) => {
-//   const user = await userService.userCreate(req.body);
-//   return res.status(201).json(user);
-// };
+const userCreate = async (req, res) => {
+  const { displayName, email, password, image } = req.body;
+
+  const { type, message } = await userService.userCreate(displayName, email, password, image); 
+  // try (req.body)
+  if (type) {
+    return res.status(409).json({ message });
+  }
+  return res.status(201).json({ token: message });
+};
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -19,6 +25,6 @@ const loginUser = async (req, res) => {
 };
 
 module.exports = {
-  // userCreate,
+  userCreate,
   loginUser,
 };
