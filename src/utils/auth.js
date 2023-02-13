@@ -18,8 +18,10 @@ const createToken = (email) => {
 };
 
 const validateToken = (token) => {
+  // console.log(token);
   try {
     const decoded = jwt.verify(token, secret);
+    console.log(decoded);
     return decoded;
   } catch (error) {
     return { type: 401, message: 'Invalid token' };
