@@ -9,8 +9,10 @@
 
 const loginRoutes = require('./loginRoutes');
 const userRoutes = require('./userRoutes');
+const categories = require('./categoriesRoutes');
 
 module.exports = {
   loginRoutes,
   userRoutes,
+  categories,
 };
