@@ -33,8 +33,22 @@ const getAll = async () => {
   return allUsers;
 };
 
+const findById = async (id) => {
+  // const resultById = await User.findByPk(id);
+  const resultById = await User.findOne({
+    where: { id },
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+  if (!resultById) { 
+    return { type: 404, message: 'User does not exist' };
+  }
+  return { type: null, message: resultById };
+  // return resultById;
+};
+
 module.exports = {
   loginUser,
   userCreate,
   getAll,
+  findById,
 };
