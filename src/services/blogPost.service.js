@@ -10,7 +10,7 @@ const getAllPost = async () => {
     include: [
       {
         model: User,
-        as: 'users',
+        as: 'user',
         attributes: { exclude: ['password'] },
       },
       {
@@ -23,7 +23,12 @@ const getAllPost = async () => {
   return allPosts;
 };
 
+// const findById = async (id) => {
+
+// };
+
 module.exports = {
   // createPost,
   getAllPost,
+  // findById,
 };
