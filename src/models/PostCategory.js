@@ -2,36 +2,66 @@ const PostCategoryModel = (sequelize, DataTypes) => {
   const PostCategory = sequelize.define('PostCategory', {
     postId: { 
       type: DataTypes.INTEGER,
-      autoIncremente: true,
+      // autoIncremente: true,
       primaryKey: true,
     },
     categoryId: { 
       type: DataTypes.INTEGER,
-      autoIncremente: true,
+      // autoIncremente: true,
       primaryKey: true,
     },
   },
     {
-      tableName: 'PostCategories',
+      tableName: 'postsCategories',
       underscored: true,
       timestamps: false,
     },
   );
+
  
   PostCategory.associate = ({ BlogPost, Category }) => {
-    Category.belongsToMany(BlogPost, {
-      as: 'blog_post',
-      foreignKey: 'id',
-      otherKey: 'id',
-      through: PostCategory
-    });
     BlogPost.belongsToMany(Category, {
       as: 'categories',
-      foreignKey: 'id',
-      otherKey: 'id',
+      foreignKey: 'post_id',
+      otherKey: 'category_id',
+      through: PostCategory
+    });
+    Category.belongsToMany(BlogPost, {
+      as: 'blog_posts',
+      foreignKey: 'category_id',
+      otherKey: 'post_id',
       through: PostCategory
     });    
   }
+
+  // PostCategory.associate = ({ BlogPost, Category }) => {
+  //   BlogPost.belongsToMany(Category, {
+  //     as: 'categories',
+  //     foreignKey: 'postId',
+  //     otherKey: 'categoryId',
+  //     through: PostCategory
+  //   });
+  //   Category.belongsToMany(BlogPost, {
+  //     as: 'posts',
+  //     foreignKey: 'categoryId',
+  //     otherKey: 'postId',
+  //     through: PostCategory
+  //   });    
+  // }
+  // PostCategory.associate = (models) => {
+  //   models.BlogPost.belongsToMany(models.Category, {
+  //     as: 'categories',
+  //     foreignKey: 'post_id',
+  //     otherKey: 'category_id',
+  //     through: PostCategory
+  //   });
+  //   models.Category.belongsToMany(models.BlogPost, {
+  //     as: 'blog_posts',
+  //     foreignKey: 'category_id',
+  //     otherKey: 'post_id',
+  //     through: PostCategory
+  //   });    
+  // }
  
   return PostCategory;
 };
