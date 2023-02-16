@@ -21,12 +21,13 @@ const authMiddleware = (req, res, next) => {
   //   // console.log(error);
   //  return res.status(401).json({ message: 'Expired or invalid token' });
   // }
-    const { email } = validateFile.validateToken(authorization);
-    if (!email) {
+    const user = validateFile.validateToken(authorization);
+    // console.log(password, 'password');
+    if (!user.email) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
     // console.log(email);
-  req.user = { email };
+  req.user = user;
 
     next();
     // console.log(error);

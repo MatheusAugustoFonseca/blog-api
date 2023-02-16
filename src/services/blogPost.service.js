@@ -1,8 +1,12 @@
-const { BlogPost, User, Category } = require('../models');
+const { BlogPost, User, Category, PostCategory } = require('../models');
 
-// const createPost = async (title, content, categoryIds) => {
-//   const newPost = await BlogPost.create({ title, content, categoryIds });
-//   return { type: null, message: newPost };
+const createPost = async ({ userId, title, content, categoryIds }) => {
+  console.log(userId, 'userid blogpost service');
+  const newPost = await BlogPost.create({ userId, title, content });
+  const categoryIdsSave = categoryIds.map((e) => ({ postId: newPost.id, categoryId: e }));
+  await PostCategory.bulkCreate(categoryIdsSave);
+  return { type: null, message: newPost };
+}; 
 // }; criar duas queries
 // title, content = novoblog post com id, esse id vira obj com categorId(vem do map, recebido pela func) e postId
 // }; criar duas queries 
@@ -49,7 +53,7 @@ const findById = async (id) => {
 };
 
 module.exports = {
-  // createPost,
+  createPost,
   getAllPost,
   findById,
 };

@@ -5,12 +5,14 @@ const loginUser = async (email, password) => {
   if (!email || !password) {
     return { type: 400, message: 'Some required fields are missing' };
   }
-  const loggedIn = await User.findOne({ where: { email, password } });
-  if (!loggedIn) {
+  const result = await User.findOne({ where: { email, password },
+     attributes: { exclude: ['password'] } });
+  // console.log(dataValues, 'loggedIn');
+  if (!result) {
     return { type: 400, message: 'Invalid fields' };
   }
 
-  const token = auth.createToken(email);
+  const token = auth.createToken(result.dataValues);
 
   return { type: null, message: token };
 };
@@ -20,8 +22,10 @@ const userCreate = async (displayName, email, password, image) => {
   if (sameEmail) { 
     return { type: 409, message: 'User already registered' };
    }
- await User.create({ displayName, email, password, image });
-  const token = auth.createToken(email); // check
+ const { dataValues: { password: p, ...dataValues } } = await User
+ .create({ displayName, email, password, image });
+//  console.log(typeof dataValues);
+  const token = auth.createToken({ ...dataValues }); // check
 
   return { type: null, message: token };
 };
