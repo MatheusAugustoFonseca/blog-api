@@ -4,11 +4,25 @@ const PostCategoryModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       // autoIncremente: true,
       primaryKey: true,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      field: 'post_id',
+      references: {
+        model: 'blog_posts',
+        key: 'id',
+      },
     },
     categoryId: { 
       type: DataTypes.INTEGER,
       // autoIncremente: true,
       primaryKey: true,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      field: 'category_id',
+      references: {
+        model: 'categories',
+        key: 'id',
+      },
     },
   },
     {

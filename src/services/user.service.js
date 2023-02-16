@@ -51,6 +51,7 @@ const findById = async (id) => {
 };
 
 const deleteUser = async (id) => {
+  console.log(id);
   await User.destroy({ where: { id } });
   return { type: null };
 };

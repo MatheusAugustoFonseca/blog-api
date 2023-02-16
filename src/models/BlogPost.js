@@ -12,10 +12,10 @@ const BlogPostModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
-      field: 'userId',
+      field: 'user_id',
       references: {
         model: 'user',
-        key: 'userId',
+        key: 'id',
       },
     },
     published: DataTypes.DATE,
