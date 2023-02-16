@@ -1,9 +1,15 @@
 const blogPostService = require('../services/blogPost.service');
 
 const createPost = async (req, res) => {
-  const { id, password } = req.user;
+  const { id } = req.user;
   const { title, content, categoryIds } = req.body;
-  console.log(password, 'undfined');
+  // console.log(password, 'undfined');
+  //   if (!title || !content) {
+  //     return res.status(400).json({ message: 'Some required fields are missing' });
+  // }
+  // if (!categoryIds.length) {
+  //   return res.status(400).json({ message: 'Some required fields are missing' });
+  // }
   const { type, message } = await blogPostService
   .createPost({ userId: Number(id), title, content, categoryIds });
   if (type) {

@@ -1,17 +1,17 @@
 const { BlogPost, User, Category, PostCategory } = require('../models');
 
 const createPost = async ({ userId, title, content, categoryIds }) => {
-  console.log(userId, 'userid blogpost service');
+  // console.log();
+  // console.log(userId, 'userid blogpost service');
+  if (!title || !content || !categoryIds || !categoryIds.length) {
+    return { type: 400, message: 'Some required fields are missing' };
+  }
   const newPost = await BlogPost.create({ userId, title, content });
   const categoryIdsSave = categoryIds.map((e) => ({ postId: newPost.id, categoryId: e }));
   await PostCategory.bulkCreate(categoryIdsSave);
   return { type: null, message: newPost };
+  // return newPost; 
 }; 
-// }; criar duas queries
-// title, content = novoblog post com id, esse id vira obj com categorId(vem do map, recebido pela func) e postId
-// }; criar duas queries 
-// criar no blogpost
-// criar no postcategories
 
 const getAllPost = async () => {
   const allPosts = await BlogPost.findAll({
