@@ -6,6 +6,5 @@ router.post('/', auth.authMiddleware, blogPostController.createPost);
 router.get('/', auth.authMiddleware, blogPostController.getAllPost);
 router.get('/:id', auth.authMiddleware, blogPostController.findById);
 // router.put('/:id', auth.authMiddleware, blogPostController.editPost);
-// router.delete('/:id', auth.authMiddleware, blogPostController.deletePost);
 
 module.exports = router;

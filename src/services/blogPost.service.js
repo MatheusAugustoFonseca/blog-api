@@ -1,16 +1,40 @@
 const { BlogPost, User, Category, PostCategory } = require('../models');
 
-const createPost = async ({ userId, title, content, categoryIds }) => {
-  // console.log();
-  // console.log(userId, 'userid blogpost service');
+const validateCategoryIds = async (categoryIds) => {
+  const allCategories = await Category.findAll();
+  const allCategoriesId = allCategories.map((category) => category.id);
+  const isValidIds = categoryIds.every((categoryId) => allCategoriesId.includes(categoryId));
+  return isValidIds;
+    // await PostCategory.findByPk(categoryIds.map((e) => e));
+};
+
+const valideateFields = async (userId, title, content, categoryIds) => {
   if (!title || !content || !categoryIds || !categoryIds.length) {
     return { type: 400, message: 'Some required fields are missing' };
   }
-  const newPost = await BlogPost.create({ userId, title, content });
+  return { type: null, message: '' };
+};
+
+const createPost = async ({ userId, title, content, categoryIds }) => {
+  // console.log(userId, 'userid blogpost service');
+  const { type, message } = valideateFields(userId, title, content, categoryIds);
+  if (type) return { type, message };
+  if (categoryIds.length === 0) {
+    return { type: 400, message: 'Some required fields are missing' };
+  }
+  const isValidId = await validateCategoryIds(categoryIds);
+  // console.log(isValidId);
+  if (!isValidId) {
+    return { type: 400, message: 'one or more "categoryIds" not found' };
+  }
+  // buscar no banco se as categorysIds existe
+  // pode fazer com promisse all / find by pk, se passar, segue o baile
+  const newPost = await BlogPost.create({ userId, title, content }); 
   const categoryIdsSave = categoryIds.map((e) => ({ postId: newPost.id, categoryId: e }));
+  // const categoryIdsSave = await Promise.all(categoryIds.map((e) => ({
+  //   postId: newPost.id, categoryId: e })));
   await PostCategory.bulkCreate(categoryIdsSave);
   return { type: null, message: newPost };
-  // return newPost; 
 }; 
 
 const getAllPost = async () => {

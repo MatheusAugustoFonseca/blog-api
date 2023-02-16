@@ -7,17 +7,17 @@ const BlogPostModel = (sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    // userId: {
-    //   type: DataTypes.INTEGER,
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    //   field: 'userId',
-    //   references: {
-    //     model: 'user',
-    //     key: 'userId',
-    //   },
-    // },
+    // userId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      field: 'userId',
+      references: {
+        model: 'user',
+        key: 'userId',
+      },
+    },
     published: DataTypes.DATE,
     updated: DataTypes.DATE,
   },

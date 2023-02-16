@@ -45,7 +45,7 @@ const findById = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   const { type } = await userService.deleteUser(id);
   if (!type) return res.status(204).end();
   };
