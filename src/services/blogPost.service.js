@@ -3,7 +3,11 @@ const { BlogPost, User, Category } = require('../models');
 // const createPost = async (title, content, categoryIds) => {
 //   const newPost = await BlogPost.create({ title, content, categoryIds });
 //   return { type: null, message: newPost };
-// };
+// }; criar duas queries
+// title, content = novoblog post com id, esse id vira obj com categorId(vem do map, recebido pela func) e postId
+// }; criar duas queries 
+// criar no blogpost
+// criar no postcategories
 
 const getAllPost = async () => {
   const allPosts = await BlogPost.findAll({
