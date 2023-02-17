@@ -93,9 +93,26 @@ const searchByQuery = async ({ q }) => {
   return { type: null, message: post };
 };
 
+const deletePost = async (id, email) => {
+  const userByEmail = await User.findOne({ where: { email } });
+  // console.log(userByEmail, 'USER BY EMAIL');
+  const postToDelete = await BlogPost.findByPk(id);
+  // console.log(postToDelete, 'POST TO DELETE');
+
+  if (!postToDelete) {
+    return { type: 404, message: 'Post does not exist' };
+  }
+  if (userByEmail.id !== postToDelete.userId) {
+    return { type: 401, message: 'Unauthorized user' };
+  }
+  await BlogPost.destroy({ where: { id } });
+  return { type: null };
+};
+
 module.exports = {
   createPost,
   getAllPost,
   findById,
   searchByQuery,
+  deletePost,
 };
