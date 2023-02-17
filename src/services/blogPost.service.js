@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, User, Category, PostCategory } = require('../models');
 
 const validateCategoryIds = async (categoryIds) => {
@@ -27,12 +28,8 @@ const createPost = async ({ userId, title, content, categoryIds }) => {
   if (!isValidId) {
     return { type: 400, message: 'one or more "categoryIds" not found' };
   }
-  // buscar no banco se as categorysIds existe
-  // pode fazer com promisse all / find by pk, se passar, segue o baile
   const newPost = await BlogPost.create({ userId, title, content }); 
   const categoryIdsSave = categoryIds.map((e) => ({ postId: newPost.id, categoryId: e }));
-  // const categoryIdsSave = await Promise.all(categoryIds.map((e) => ({
-  //   postId: newPost.id, categoryId: e })));
   await PostCategory.bulkCreate(categoryIdsSave);
   return { type: null, message: newPost };
 }; 
@@ -76,8 +73,29 @@ const findById = async (id) => {
   return { type: null, message: searchedId };
 };
 
+const searchByQuery = async ({ q }) => {
+  const post = await BlogPost.findAll({
+    where: { 
+      [Op.or]: [
+      { title: { [Op.substring]: q },
+     },
+     {
+      content: { [Op.substring]: q },
+     },
+    ] },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] },
+      },
+      { model: Category, as: 'categories', through: { attributes: [] },
+      },
+    ],
+  });
+  return { type: null, message: post };
+};
+
 module.exports = {
   createPost,
   getAllPost,
   findById,
+  searchByQuery,
 };

@@ -38,8 +38,15 @@ const findById = async (req, res) => {
   return res.status(200).json(message);
 };
 
+const searchByQuery = async (req, res) => {
+  const { query: { q } } = req;
+  const { message } = await blogPostService.searchByQuery({ q });
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createPost,
   getAllPost,
   findById,
+  searchByQuery,
 };
