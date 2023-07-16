@@ -16,12 +16,10 @@ const createToken = (payload) => {
 const validateToken = (token) => {
   try {
     const decoded = jwt.verify(token, secret);
-    // console.log(decoded);
     return decoded;
   } catch (error) {
     return { type: 401, message: 'Invalid token' };
   }
-  // return decoded;
 };
 
 module.exports = {

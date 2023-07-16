@@ -31,7 +31,7 @@ module.exports = {
       published: {
         allowNull: false,
         type: Sequelize.DATE,
-        // field: 'published',
+        field: 'published',
       },
       updated: {
         allowNull: false,

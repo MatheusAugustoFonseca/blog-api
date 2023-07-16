@@ -17,7 +17,6 @@ const valideateFields = async (userId, title, content, categoryIds) => {
 };
 
 const createPost = async ({ userId, title, content, categoryIds }) => {
-  // console.log(userId, 'userid blogpost service');
   const { type, message } = valideateFields(userId, title, content, categoryIds);
   if (type) return { type, message };
   if (categoryIds.length === 0) {
@@ -95,9 +94,7 @@ const searchByQuery = async ({ q }) => {
 
 const deletePost = async (id, email) => {
   const userByEmail = await User.findOne({ where: { email } });
-  // console.log(userByEmail, 'USER BY EMAIL');
   const postToDelete = await BlogPost.findByPk(id);
-  // console.log(postToDelete, 'POST TO DELETE');
 
   if (!postToDelete) {
     return { type: 404, message: 'Post does not exist' };

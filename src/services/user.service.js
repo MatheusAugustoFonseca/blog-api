@@ -7,10 +7,10 @@ const loginUser = async (email, password) => {
   }
   const result = await User.findOne({ where: { email, password },
      attributes: { exclude: ['password'] } });
-  // console.log(dataValues, 'loggedIn');
   if (!result) {
     return { type: 400, message: 'Invalid fields' };
   }
+  console.log(result, 'consolelog no RESULT');
 
   const token = auth.createToken(result.dataValues);
 
@@ -24,8 +24,7 @@ const userCreate = async (displayName, email, password, image) => {
    }
  const { dataValues: { password: p, ...dataValues } } = await User
  .create({ displayName, email, password, image });
-//  console.log(typeof dataValues);
-  const token = auth.createToken({ ...dataValues }); // check
+  const token = auth.createToken({ ...dataValues });
 
   return { type: null, message: token };
 };
@@ -38,7 +37,6 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  // const resultById = await User.findByPk(id);
   const resultById = await User.findOne({
     where: { id },
     attributes: ['id', 'displayName', 'email', 'image'],
@@ -47,7 +45,6 @@ const findById = async (id) => {
     return { type: 404, message: 'User does not exist' };
   }
   return { type: null, message: resultById };
-  // return resultById;
 };
 
 const deleteUser = async (id) => {
